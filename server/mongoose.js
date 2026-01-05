@@ -2,17 +2,16 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 dotenv.config();
-const env = process.env;
+
+const dbUrl = process.env.MONGODB_URL;
 
 mongoose
-  .connect(
-    `mongodb+srv://Zhiperus:${env.DATABASE_PASSWORD}@cluster0.v3rcx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
-  )
+  .connect(dbUrl)
   .then(() => {
     console.log("Connected to the database.");
   })
-  .catch(() => {
-    console.log("Connection failed.");
+  .catch((err) => {
+    console.log("Connection failed:", err);
   });
 
 const newSchema = new mongoose.Schema(
@@ -50,7 +49,7 @@ const newSchema = new mongoose.Schema(
       potList: { type: Array },
     },
   },
-  { minimize: false }
+  { minimize: false },
 );
 
 const collection = mongoose.model("users", newSchema);
